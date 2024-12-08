@@ -1,10 +1,23 @@
 const express = require("express");
 const app = express();
 
-app.use("/user/:userName", (req, res) => {
-  console.log(req.params);
-  res.send("User");
-});
+app.use(
+  "/user",
+  (req, res,next) => {
+    console.log("hello");
+    // res.send("User");
+    next();
+  },
+  (req, res, next) => {
+    console.log("2nd user");
+    next();
+  },
+  (req, res, next) => {
+    console.log("3rd user");
+    
+    next();
+  }
+);
 
 // app.get("/user", (req, res) => {
 //   res.send({ name: "pandain", age: "23" });
