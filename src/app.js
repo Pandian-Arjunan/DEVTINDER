@@ -1,43 +1,24 @@
 const express = require("express");
 const app = express();
 
-app.use(
-  "/user",
-  (req, res,next) => {
-    console.log("hello");
-    // res.send("User");
-    next();
-  },
-  (req, res, next) => {
-    console.log("2nd user");
-    next();
-  },
-  (req, res, next) => {
-    console.log("3rd user");
-    
-    next();
-  }
-);
+const { adminAuth, userAuth } = require("./middleware/auth");
 
-// app.get("/user", (req, res) => {
-//   res.send({ name: "pandain", age: "23" });
-// });
+app.use("/admin", adminAuth);
 
-// app.post("/user", (req, res) => {
-//   res.send("data has been successfully posted");
-// });
-// app.delete('/user', (req,res)=> {
-//   res.send('Data successfully deleted')
-// })
+app.use("/user", userAuth, (req, res) => {
+  res.send("User data send");
+});
+app.use("/user/data", (req, res) => {
+  res.send("your data is sent");
+});
 
-// app.patch('/user', (req,res)=> {
-//   res.send('Data part has been modified')
-// })
-
-// app.put('/user', (req,res)=> {
-//   res.send("data has been updated")
-// })
+app.use("/admin/getAllData", (req, res) => {
+  res.send("All data sent");
+});
+app.use("/admin/deleteData", (req, res) => {
+  res.send("all data deleted");
+});
 
 app.listen(3001, () => {
-  console.log("server is running in port 3001");
+  console.log("server is running on the port 3001");
 });
