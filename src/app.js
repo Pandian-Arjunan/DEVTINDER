@@ -3,18 +3,18 @@ const app = express();
 const connectDB = require("./config/database");
 const User = require("./models/user");
 
+app.use(express.json());
 app.post("/signup", async (req, res) => {
   //Creating instance of the user
-  const user = new User({
-    firstName: "sabarish",
-    lastName: "Arjunan",
-    emailId: "sabarish@arjunan.com",
-    password: "sabarish@123",
-  });
+  const user = new User(req.body);
 
-  await user.save();
+  try {
+    await user.save();
 
-  res.send("user added successfully");
+    res.send("user added successfully");
+  } catch (err) {
+    console.log("data is not saved in dataase");
+  }
 });
 
 connectDB()
